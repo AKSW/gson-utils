@@ -6,10 +6,9 @@
     <packaging>jar</packaging>
 
     <name>GSON Utils - Core</name>
-    <url>http://github.org/AKSW/jena-sparql-api</url>
 
     <parent>
-        <groupId>org.aksw.gson.utils</groupId>
+        <groupId>org.aksw.gson</groupId>
         <artifactId>gson-utils-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
