@@ -9,69 +9,89 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 public class JsonTransformerRewrite
-	extends JsonTransformerBase<JsonElement>
+    extends JsonTransformerBase<JsonElement>
 {
-	private JsonVisitor<? extends JsonElement> visitor;
+    private JsonVisitor<? extends JsonElement> visitor;
+    protected boolean isRecursive;
 
-	public JsonTransformerRewrite(JsonVisitor<? extends JsonElement> visitor) {
-		this.visitor = visitor;
-	}
+    public JsonTransformerRewrite(JsonVisitor<? extends JsonElement> visitor) {
+        this(visitor, true);
+    }
 
-	@Override
-	public JsonElement apply(JsonElement json) {
-		JsonElement repl = JsonWalker.visit(json, visitor);
+    public JsonTransformerRewrite(JsonVisitor<? extends JsonElement> visitor, boolean isRecursive) {
+        this.visitor = visitor;
+        this.isRecursive = isRecursive;
+    }
 
-		JsonElement result = super.apply(repl);
-		return result;
-	}
+    @Override
+    public JsonElement apply(JsonElement json) {
+        JsonElement repl = JsonWalker.visit(json, visitor);
 
-	@Override
-	public JsonElement visit(JsonNull json) {
-		return json;
-	}
+        JsonElement result = isRecursive
+                ? super.apply(repl)
+                : repl;
 
-	@Override
-	public JsonElement visit(JsonObject json) {
-		JsonObject copy = new JsonObject();
+        return result;
+    }
 
-		boolean hasChanged = false;
-		for (Entry<String, JsonElement> entry : json.entrySet()) {
-			String key = entry.getKey();
-			JsonElement val = entry.getValue();
+    @Override
+    public JsonElement visit(JsonNull json) {
+        return json;
+    }
 
-			JsonElement e = apply(val);
-			if(e != val) {
-				hasChanged = true;
-			}
+    @Override
+    public JsonElement visit(JsonObject json) {
+        JsonObject copy = new JsonObject();
 
-			copy.add(key, e);
-		}
+        boolean hasChanged = false;
+        for (Entry<String, JsonElement> entry : json.entrySet()) {
+            String key = entry.getKey();
+            JsonElement val = entry.getValue();
 
-		JsonObject result = hasChanged ? copy : json;
-		return result;
-	}
+            JsonElement e = apply(val);
+            if(e != val) {
+                hasChanged = true;
+            }
 
-	@Override
-	public JsonElement visit(JsonArray json) {
-		JsonArray copy = new JsonArray();
+            copy.add(key, e);
+        }
 
-		boolean hasChanged = false;
-		for (JsonElement item : json) {
-			JsonElement e = apply(item);
+        JsonObject result = hasChanged ? copy : json;
+        return result;
+    }
 
-			if(e != item) {
-				hasChanged = true;
-			}
+    @Override
+    public JsonElement visit(JsonArray json) {
+        JsonArray copy = new JsonArray();
 
-			copy.add(e);
-		}
+        boolean hasChanged = false;
+        for (JsonElement item : json) {
+            JsonElement e = apply(item);
 
-		JsonArray result = hasChanged ? copy : json;
-		return result;
-	}
+            if(e != item) {
+                hasChanged = true;
+            }
 
-	@Override
-	public JsonElement visit(JsonPrimitive json) {
-		return json;
-	}
+            copy.add(e);
+        }
+
+        JsonArray result = hasChanged ? copy : json;
+        return result;
+    }
+
+    @Override
+    public JsonElement visit(JsonPrimitive json) {
+        return json;
+    }
+
+    public static JsonTransformerRewrite create(JsonVisitor<? extends JsonElement> visitor) {
+        JsonTransformerRewrite result = create(visitor, true);
+        return result;
+    }
+
+    public static JsonTransformerRewrite create(JsonVisitor<? extends JsonElement> visitor, boolean isRecursive) {
+        JsonTransformerRewrite result = new JsonTransformerRewrite(visitor, isRecursive);
+        return result;
+    }
+
 }
