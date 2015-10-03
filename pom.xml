@@ -260,6 +260,7 @@
         </snapshotRepository>
     </distributionManagement>
 
+<!--
     <repositories>
         <repository>
             <id>maven.aksw.snapshots</id>
@@ -269,5 +270,6 @@
             <snapshots><enabled>true</enabled></snapshots>
         </repository>
     </repositories>
+-->
 
 </project>
