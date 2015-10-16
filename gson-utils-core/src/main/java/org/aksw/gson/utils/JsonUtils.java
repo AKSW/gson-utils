@@ -7,6 +7,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 public class JsonUtils {
+    public static JsonArray singletonArray(JsonElement item) {
+        JsonArray result = new JsonArray();
+        result.add(item);
+        return result;
+    }
+
     public static JsonElement safeGet(JsonArray arr, int i) {
         JsonElement result = i < arr.size() ? arr.get(i) : null;
         return result;
