@@ -4,7 +4,7 @@
 
     <groupId>org.aksw.gson</groupId>
     <artifactId>gson-utils-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -33,7 +33,7 @@
         <url>https://github.com/AKSW/gson-utils</url>
         <connection>scm:git:git://github.com/AKSW/gson-utils.git</connection>
         <developerConnection>scm:git:git@github.com:AKSW/gson-utils.git</developerConnection>
-        <tag>gson-utils-parent-1.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <developers>
