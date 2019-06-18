@@ -6,7 +6,7 @@
 
 	<groupId>org.aksw.gson</groupId>
 	<artifactId>gson-utils-parent</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 
